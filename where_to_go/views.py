@@ -6,13 +6,10 @@ from places.models import Place, Image
 from django.http import JsonResponse
 
 
-
-
 def show_mainpage(request):
     features = []
     places = Place.objects.all()
     for place in places:
-        details = {}
         feature = {
             "type": "Feature",
             "geometry": {
@@ -22,7 +19,7 @@ def show_mainpage(request):
             "properties": {
                 "title": place.title,
                 "placeId": place.place_id,
-                "detailsUrl": "../static/places/moscow_legends.json"
+                "detailsUrl": f"../places/{place.id}"
             }
         }
         features.append(feature)
@@ -39,7 +36,7 @@ def fetch_place_details(request, place_id):
     place = get_object_or_404(Place, id=place_id)
     images_urls = []
     for image in place.images.all():
-        image_url = image.get_absolute_image_url
+        image_url = image.image.url
         images_urls.append(image_url)
 
     payload = {
@@ -48,8 +45,8 @@ def fetch_place_details(request, place_id):
         "description_short": place.description_short,
         "description_long": place.description_long,
         "coordinates": {
-            "lng": place.longitude,
-            "lat": place.latitude
+            "lng": str(place.longitude),
+            "lat": str(place.latitude)
         }
     }
     response = JsonResponse(payload, safe=False, json_dumps_params={'ensure_ascii': False, 'indent': 4})
