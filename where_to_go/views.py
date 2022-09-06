@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from places.models import Place, Image
 from django.http import JsonResponse
+from django.urls import reverse
 
 
 def show_mainpage(request):
@@ -19,7 +20,7 @@ def show_mainpage(request):
             "properties": {
                 "title": place.title,
                 "placeId": place.place_id,
-                "detailsUrl": f"../places/{place.id}"
+                "detailsUrl": reverse(fetch_place_details, kwargs={'place_id': place.id})
             }
         }
         features.append(feature)
