@@ -38,7 +38,7 @@ class Image(models.Model):
     )
 
     def __str__(self):
-        return f'{self.id} {self.place.title} '
+        return f'{self.ordinal_number} {self.place.title} '
 
     class Meta:
         verbose_name = 'Картинка'
