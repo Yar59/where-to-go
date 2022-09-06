@@ -12,6 +12,10 @@ class Place(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'Место'
+        verbose_name_plural = 'Места'
+
 
 class Image(models.Model):
     image = models.ImageField(
@@ -25,6 +29,18 @@ class Image(models.Model):
         verbose_name='Место',
         related_name='images'
     )
+    ordinal_number = models.PositiveIntegerField(
+        'Порядковый номер',
+        default=0,
+        blank=False,
+        null=False,
+        db_index=True,
+    )
 
     def __str__(self):
         return f'{self.id} {self.place.title} '
+
+    class Meta:
+        verbose_name = 'Картинка'
+        verbose_name_plural = 'Картинки'
+        ordering = ['ordinal_number']

@@ -9,7 +9,7 @@ class ImageInline(admin.TabularInline):
     fields = (
         'image',
         'preview',
-        'place',
+        'ordinal_number',
     )
     readonly_fields = ["preview", ]
     def preview(self, obj):
