@@ -59,7 +59,7 @@ def import_place(json_path: str, url=False):
             with open(json_path, 'r') as file:
                 imported_place = json.load(file)
 
-        place, status = Place.objects.get_or_create(
+        place, _ = Place.objects.get_or_create(
             title=imported_place['title'],
             latitude=imported_place['coordinates']['lat'],
             longitude=imported_place['coordinates']['lng'],
