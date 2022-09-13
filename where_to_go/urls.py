@@ -22,7 +22,7 @@ from where_to_go import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.show_mainpage),
+    path('', views.show_main_page),
     path('places/<int:place_id>', views.fetch_place_details)
 ]
 
