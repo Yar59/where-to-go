@@ -68,7 +68,6 @@ def import_place(json_path: str, url=False):
         title=imported_place['title'],
         latitude=imported_place['coordinates']['lat'],
         longitude=imported_place['coordinates']['lng'],
-        place_id=imported_place['title'],
         defaults={
             'description_long': imported_place.get('description_long', ''),
             'description_short': imported_place.get('description_short', ''),
