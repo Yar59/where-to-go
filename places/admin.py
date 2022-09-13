@@ -21,7 +21,7 @@ class ImageInline(SortableTabularInline):
 
 @admin.register(Place)
 class PlasceAdmin(SortableAdminBase, admin.ModelAdmin):
-    search_fields = ('title',)
+    search_fields = ('title', )
     inlines = [ImageInline, ]
 
 
@@ -33,8 +33,8 @@ class ImageAdmin(admin.ModelAdmin):
         'place',
         'ordinal_number',
     )
-    raw_id_fields = ['place',]
-    readonly_fields = ["preview",]
+    raw_id_fields = ['place', ]
+    readonly_fields = ["preview", ]
 
     def preview(self, obj):
         return format_html(f'<img src="{obj.image.url}" style="max-height: 200px;">')
