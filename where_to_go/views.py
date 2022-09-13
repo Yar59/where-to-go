@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.urls import reverse
 
 
-def show_mainpage(request):
+def show_main_page(request):
     features = []
     places = Place.objects.all()
     for place in places:
