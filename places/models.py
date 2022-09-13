@@ -21,8 +21,7 @@ class Place(models.Model):
 class Image(models.Model):
     image = models.ImageField(
         'Картинки',
-        null=True,
-        blank=True,
+        null=True,0
     )
     place = models.ForeignKey(
         Place,
@@ -33,8 +32,6 @@ class Image(models.Model):
     ordinal_number = models.PositiveIntegerField(
         'Порядковый номер',
         default=0,
-        blank=False,
-        null=False,
         db_index=True,
     )
 
