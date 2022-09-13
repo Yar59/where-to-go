@@ -50,41 +50,52 @@ def import_demo_places(demo_json_path: str):
 
 
 def import_place(json_path: str, url=False):
-    try:
-        if url:
+    if url:
+        try:
             response = requests.get(json_path)
             response.raise_for_status()
             imported_place = response.json()
-        else:
-            with open(json_path, 'r') as file:
-                imported_place = json.load(file)
+        except (
+                requests.exceptions.HTTPError,
+                requests.exceptions.ReadTimeout,
+        ):
+            logging.exception(f'Не удалось загрузить {imported_place["title"]}:')
+    else:
+        with open(json_path, 'r') as file:
+            imported_place = json.load(file)
 
-        place, _ = Place.objects.get_or_create(
-            title=imported_place['title'],
-            latitude=imported_place['coordinates']['lat'],
-            longitude=imported_place['coordinates']['lng'],
-            place_id=imported_place['title'],
-            defaults={
-                'description_long': imported_place.get('description_long', ''),
-                'description_short': imported_place.get('description_short', ''),
-            },
-        )
+    place, _ = Place.objects.get_or_create(
+        title=imported_place['title'],
+        latitude=imported_place['coordinates']['lat'],
+        longitude=imported_place['coordinates']['lng'],
+        place_id=imported_place['title'],
+        defaults={
+            'description_long': imported_place.get('description_long', ''),
+            'description_short': imported_place.get('description_short', ''),
+        },
+    )
 
-        for number, image_url in enumerate(imported_place['imgs'], start=1):
-            image = requests.get(image_url)
-            image.raise_for_status()
-            Image.objects.create(
-                place=place,
-                ordinal_number=number,
-                image=ContentFile(
-                    image.content,
-                    name=f'{imported_place["title"]}_{number}.jpg'
-                )
+    for number, image_url in enumerate(imported_place['imgs'], start=1):
+        image_name = f'{imported_place["title"]}_{number}.jpg'
+        try:
+            fetch_image(place, image_url, image_name)
+        except (
+                requests.exceptions.HTTPError,
+                requests.exceptions.ReadTimeout,
+        ):
+            logging.exception(
+                f"Не получилось загрузить {number} фотографию для {imported_place['title']}"
             )
 
-    except (
-        MultipleObjectsReturned,
-        requests.exceptions.HTTPError,
-        requests.exceptions.ReadTimeout,
-    ):
-        logging.exception('Loading place error:')
+
+def fetch_image(place, image_url, image_name):
+    image = requests.get(image_url)
+    image.raise_for_status()
+    Image.objects.create(
+        place=place,
+        ordinal_number=number,
+        image=ContentFile(
+            image.content,
+            name=image_name
+        )
+    )
