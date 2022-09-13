@@ -46,20 +46,20 @@ def import_demo_places(demo_json_path: str):
     with open(demo_json_path, 'r') as file:
         places_json_urls = json.load(file)
         for json_url in places_json_urls['places']:
-            import_place(json_path=json_url, url=True)
+            try:
+                import_place(json_path=json_url, url=True)
+            except (
+                    requests.exceptions.HTTPError,
+                    requests.exceptions.ReadTimeout,
+            ):
+                logging.exception(f'Не удалось загрузить файл {url}:')
 
 
 def import_place(json_path: str, url=False):
     if url:
-        try:
-            response = requests.get(json_path)
-            response.raise_for_status()
-            imported_place = response.json()
-        except (
-                requests.exceptions.HTTPError,
-                requests.exceptions.ReadTimeout,
-        ):
-            logging.exception(f'Не удалось загрузить {imported_place["title"]}:')
+        response = requests.get(json_path)
+        response.raise_for_status()
+        imported_place = response.json()
     else:
         with open(json_path, 'r') as file:
             imported_place = json.load(file)
