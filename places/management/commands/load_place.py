@@ -52,7 +52,7 @@ def import_demo_places(demo_json_path: str):
                     requests.exceptions.HTTPError,
                     requests.exceptions.ReadTimeout,
             ):
-                logging.exception(f'Не удалось загрузить файл {url}:')
+                logging.exception(f'Не удалось загрузить файл {json_url}:')
 
 
 def import_place(json_path: str, url=False):
