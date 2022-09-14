@@ -20,7 +20,6 @@ class Place(models.Model):
 class Image(models.Model):
     image = models.ImageField(
         'Картинки',
-        null=True,
     )
     place = models.ForeignKey(
         Place,
