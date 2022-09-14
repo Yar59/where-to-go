@@ -63,17 +63,18 @@ def import_place(json_path: str, url=False):
     else:
         with open(json_path, 'r') as file:
             imported_place = json.load(file)
-
-    place, _ = Place.objects.get_or_create(
-        title=imported_place['title'],
-        latitude=imported_place['coordinates']['lat'],
-        longitude=imported_place['coordinates']['lng'],
-        defaults={
-            'description_long': imported_place.get('description_long', ''),
-            'description_short': imported_place.get('description_short', ''),
-        },
-    )
-
+    try:
+        place, _ = Place.objects.get_or_create(
+            title=imported_place['title'],
+            latitude=imported_place['coordinates']['lat'],
+            longitude=imported_place['coordinates']['lng'],
+            defaults={
+                'description_long': imported_place.get('description_long', ''),
+                'description_short': imported_place.get('description_short', ''),
+            },
+        )
+    except MultipleObjectsReturned:
+        logging.exception('Найдены дубликаты места')
     for number, image_url in enumerate(imported_place['imgs'], start=1):
         image_name = f'{imported_place["title"]}_{number}.jpg'
         try:
