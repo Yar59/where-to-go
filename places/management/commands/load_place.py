@@ -74,7 +74,7 @@ def import_place(json_path: str, url=False):
             },
         )
     except MultipleObjectsReturned:
-        logging.exception('Найдены дубликаты места')
+        logging.exception(f'Найдены дубликаты места {imported_place["title"]}')
     for number, image_url in enumerate(imported_place['imgs'], start=1):
         image_name = f'{imported_place["title"]}_{number}.jpg'
         try:
