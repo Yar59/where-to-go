@@ -77,7 +77,7 @@ def import_place(json_path: str, url=False):
     for number, image_url in enumerate(imported_place['imgs'], start=1):
         image_name = f'{imported_place["title"]}_{number}.jpg'
         try:
-            fetch_image(place, image_url, image_name)
+            fetch_image(place, image_url, image_name, number)
         except (
                 requests.exceptions.HTTPError,
                 requests.exceptions.ReadTimeout,
@@ -87,7 +87,7 @@ def import_place(json_path: str, url=False):
             )
 
 
-def fetch_image(place, image_url, image_name):
+def fetch_image(place, image_url, image_name, number):
     image = requests.get(image_url)
     image.raise_for_status()
     Image.objects.create(
