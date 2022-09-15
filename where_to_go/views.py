@@ -7,18 +7,20 @@ from django.urls import reverse
 
 def show_main_page(request):
     places = Place.objects.all()
-    features = [{
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [place.longitude, place.latitude]
-                    },
-                    "properties": {
-                        "title": place.title,
-                        "placeId": place.id,
-                        "detailsUrl": reverse(fetch_place_details, kwargs={'place_id': place.id})
-                    }
-                    } for place in places]
+    features = [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [place.longitude, place.latitude]
+            },
+            "properties": {
+                "title": place.title,
+                "placeId": place.id,
+                "detailsUrl": reverse(fetch_place_details, kwargs={'place_id': place.id})
+            }
+        } for place in places
+    ]
     context = {
         'places': {
             "type": "FeatureCollection",
