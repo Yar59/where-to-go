@@ -93,7 +93,7 @@ def import_place(json_path: str, url=False):
 def fetch_image(place, image_url, image_name, number):
     image = requests.get(image_url)
     image.raise_for_status()
-    Image.objects.create(
+    Image.objects.get_or_create(
         place=place,
         ordinal_number=number,
         image=ContentFile(
