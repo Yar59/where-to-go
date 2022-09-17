@@ -64,7 +64,7 @@ def import_place(json_path: str, url=False):
         with open(json_path, 'r') as file:
             imported_place = json.load(file)
     try:
-        place, status = Place.objects.get_or_create(
+        place, created = Place.objects.get_or_create(
             title=imported_place['title'],
             latitude=imported_place['coordinates']['lat'],
             longitude=imported_place['coordinates']['lng'],
@@ -73,7 +73,7 @@ def import_place(json_path: str, url=False):
                 'description_short': imported_place.get('description_short', ''),
             },
         )
-        if status:
+        if not created:
             return
     except MultipleObjectsReturned:
         logging.exception(f'Найдены дубликаты места {imported_place["title"]}')
