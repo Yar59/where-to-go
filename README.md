@@ -32,8 +32,8 @@ python manage.py shell
 Для работы требуется [python](https://www.python.org/) версии 3.10. 
 - Скачайте код
 - Установите зависимости командой `pip install -r requirements.txt`
-- Создайте файл базы данных и сразу примените все миграции командой `python3 manage.py migrate`
 - Создайте и заполните переменные окружения
+- Создайте файл базы данных и сразу примените все миграции командой `python3 manage.py migrate`
 - Запустите сервер командой `python3 manage.py runserver`
 
 
